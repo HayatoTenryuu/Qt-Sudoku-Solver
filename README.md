@@ -1,4 +1,4 @@
-#Qt-Sudoku-Solver
+# Qt-Sudoku-Solver
 This is literally just a C++ copy of my other C# Sudoku Solver. 
 The reason I'm making this one is because I want the brute force solution to use Prolog, because it is easy to think of that method of solving things as a recursive problem:
 
