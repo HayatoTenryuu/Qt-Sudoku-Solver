@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+/* Added these so that I can manipulate those object types. */
 #include <QMessageBox>
 #include <QIcon>
 
