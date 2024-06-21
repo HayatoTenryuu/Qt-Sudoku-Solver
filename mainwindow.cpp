@@ -10,6 +10,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Make the icon/button background transparent
+    QPixmap pixmap(":/Resources/Resources/Blue_question_mark_icon.svg.png");
+    QPixmap mapper = pixmap.scaled(25, 25);
+    ui->commandLinkButton->setMask(mapper.mask());
 }
 
 MainWindow::~MainWindow()
