@@ -9,5 +9,6 @@
         <file>Resources/Blue_question_mark_icon_pressed.png</file>
         <file>Resources/pushbutton.png</file>
         <file>Resources/pushbutton_pressed.png</file>
+        <file>styles.css</file>
     </qresource>
 </RCC>

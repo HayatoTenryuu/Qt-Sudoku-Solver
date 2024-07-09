@@ -160,22 +160,7 @@ color: rgb(0, 0, 0);</string>
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton
-{
-	image: url(:/Resources/Resources/pushbutton.png);
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:pressed 
-{
-	image: url(:/Resources/Resources/pushbutton_pressed.png);
-	color: rgb(200, 200, 200);
-}
-
-QPushButton:hover 
-{
-border-width: 2px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>Solve!</string>
@@ -219,20 +204,7 @@ border-width: 2px;
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton
-{
-image: url(:/Resources/Resources/Blue_question_mark_icon.svg.png);
-}
-
-QPushButton:pressed 
-{
-image: url(:/Resources/Resources/Blue_question_mark_icon_pressed.png);
-}
-
-QPushButton:hover
-{
-border-radius: 30px;
-}</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
