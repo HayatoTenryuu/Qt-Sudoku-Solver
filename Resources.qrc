@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/Resources">
+        <file>Resources/active.png</file>
+        <file>Resources/blank-sudoku-grid.png</file>
+        <file>Resources/Blue_question_mark_icon.svg.png</file>
+        <file>Resources/inactive.png</file>
+        <file>Resources/background.png</file>
+        <file>Resources/Cuneiform_sumer_dingir.svg.png</file>
+        <file>Resources/Blue_question_mark_icon_pressed.png</file>
+        <file>Resources/pushbutton.png</file>
+        <file>Resources/pushbutton_pressed.png</file>
+    </qresource>
+</RCC>
