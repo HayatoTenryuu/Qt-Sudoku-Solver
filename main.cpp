@@ -1,9 +1,21 @@
-#include "mainwindow.h"
+/* ---------------------------------
+ * Libraries, AKA stuff you can do.
+ * --------------------------------*/
 
+// Default
+#include "mainwindow.h"
 #include <QApplication>
+
+// Add any needed libraries here.
 #include <QFile>
 #include <QTextStream>
 
+
+/* -----------------------------------------------------
+ * Custom functions that the main application will use.
+-------------------------------------------------------*/
+
+// File I/O for reading the Style Sheet
 QString readTextFile(QString path)
 {
     QFile file(path);
@@ -17,20 +29,25 @@ QString readTextFile(QString path)
     return "";
 }
 
+/* --------------------------------------
+ * Main function, with any needed extras.
+----------------------------------------*/
+
 int main(int argc, char *argv[])
 {
+    // Set up the application.
     QApplication a(argc, argv);
 
-    QString styles = readTextFile(":/Resources/styles.css");
-
+    // Pull from the style sheet (if it exists).
+    QString styles = readTextFile(":/styles.css");
     if(styles.length() > 0)
     {
         a.setStyleSheet(styles);
     }
 
+    // Set up the main window with any needed names/customizations.
     MainWindow w;
     w.setWindowTitle("Sudoku Solver");
-
     w.show();
     return a.exec();
 

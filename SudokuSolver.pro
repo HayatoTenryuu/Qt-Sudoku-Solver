@@ -1,5 +1,9 @@
 QT       += core gui
 
+QT       += core multimedia
+
+TARGET = MediaPlayer
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17

@@ -1,12 +1,12 @@
 QPushButton#SolveButton
 {
-image: url(:/Resources/Resources/pushbutton.png);
+image: url(:/Resources/pushbutton.png);
 color: rgb(255, 255, 255);
 }
 
 QPushButton#SolveButton:pressed
 {
-image: url(:/Resources/Resources/pushbutton_pressed.png);
+image: url(:/Resources/pushbutton_pressed.png);
 color: rgb(200, 200, 200);
 }
 
@@ -19,12 +19,12 @@ padding: 2px;
 
 QPushButton#HelpButton
 {
-image: url(:/Resources/Resources/Blue_question_mark_icon.svg.png);
+image: url(:/Resources/Blue_question_mark_icon.svg.png);
 }
 
 QPushButton#HelpButton:pressed
 {
-image: url(:/Resources/Resources/Blue_question_mark_icon_pressed.png);
+image: url(:/Resources/Blue_question_mark_icon_pressed.png);
 }
 
 QPushButton#HelpButton:hover
@@ -34,7 +34,17 @@ border-radius: 30px;
 
 QPushButton#TabButton
 {
-image: url(:/Resources/Resources/active.png);
+image: url(:/Resources/active.png);
 color: rgb(0, 0, 0);
 border: none;
+}
+
+QLabel
+{
+    image: url(:/Resources/blank-sudoku-grid.png);
+}
+
+QMainWindow
+{
+    windowIcon: url(Resources/Cuneiform_sumer_dingir.svg.png);
 }

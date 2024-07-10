@@ -1,36 +1,53 @@
+/* ---------------------------------
+ * Libraries, AKA stuff you can do.
+ * --------------------------------*/
+
+// Default
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-/* Added these so that I can manipulate those object types. */
+// Add any needed libraries here.
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QMouseEvent>
 #include <QMessageBox>
 
+
+/* -----------------------------------
+ * Constructor, AKA behavior on start.
+-------------------------------------*/
+
+// Default setup stuff
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+
+    // Connect signals and slots here.
+    connect(ui->HelpButton, SIGNAL(clicked()), this, SLOT(HelpButton_clicked()));
 }
 
+/* -----------------------------------
+ * Destructor, AKA behavior on close.
+-------------------------------------*/
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-/* ------------------------------------------------------------------------------------------------------------
- * Everything before this came by default. This came from right-clicking the widget and hitting "go to slot".
- * Note that doing so also created the declaration in mainwindow.h for you.
- * ------------------------------------------------------------------------------------------------------------*/
 
+/* --------------------------
+ * Slots, AKA custom actions.
+-----------------------------*/
 
-
-
-
-void MainWindow::on_HelpButton_clicked()
+// Popup window for clicking the Help Button
+void MainWindow::HelpButton_clicked()
 {
+
     // Initialize the message box:
     QMessageBox MB;
-
 
     // Add odds and ends settings:
     MB.setWindowTitle("How to Use Sudoku Solver");
@@ -51,4 +68,23 @@ void MainWindow::on_HelpButton_clicked()
     // Run the thing.
     MB.exec();
 }
+
+
+// Fun Gilga-laugh when you click a blank space in the app
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+
+    QMediaPlayer * p = new QMediaPlayer;
+    QAudioOutput * d = new QAudioOutput;
+
+    p->setAudioOutput(d);
+    p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
+    d->setVolume(0.02);
+
+    p->play();
+
+    event->accept();
+
+}
+
 

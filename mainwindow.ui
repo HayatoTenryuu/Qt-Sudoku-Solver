@@ -18,10 +18,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="Resources.qrc">
-    <normaloff>:/Resources/Resources/Cuneiform_sumer_dingir.svg.png</normaloff>:/Resources/Resources/Cuneiform_sumer_dingir.svg.png</iconset>
-  </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
@@ -341,9 +337,6 @@
           <property name="text">
            <string/>
           </property>
-          <property name="pixmap">
-           <pixmap resource="Resources.qrc">:/Resources/Resources/blank-sudoku-grid.png</pixmap>
-          </property>
           <property name="openExternalLinks">
            <bool>true</bool>
           </property>
@@ -482,8 +475,6 @@
    </layout>
   </widget>
  </widget>
- <resources>
-  <include location="Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
