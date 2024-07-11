@@ -39,12 +39,7 @@ color: rgb(0, 0, 0);
 border: none;
 }
 
-QLabel
+QLabel#SudokuGrid
 {
     image: url(:/Resources/blank-sudoku-grid.png);
-}
-
-QMainWindow
-{
-    windowIcon: url(Resources/Cuneiform_sumer_dingir.svg.png);
 }

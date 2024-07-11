@@ -8,5 +8,6 @@
         <file>Resources/pushbutton.png</file>
         <file>Resources/pushbutton_pressed.png</file>
         <file>Resources/S012_LvUp.ogg</file>
+        <file>styles.css</file>
     </qresource>
 </RCC>

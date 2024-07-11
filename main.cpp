@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
     // Set up the main window with any needed names/customizations.
     MainWindow w;
     w.setWindowTitle("Sudoku Solver");
+    w.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
     w.show();
     return a.exec();
 
