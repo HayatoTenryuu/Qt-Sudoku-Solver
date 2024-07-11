@@ -7,10 +7,29 @@
 #include "ui_mainwindow.h"
 
 // Add any needed libraries here.
-#include <QMediaPlayer>
-#include <QAudioOutput>
 #include <QMouseEvent>
 #include <QMessageBox>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QStackedLayout>
+
+// Testing purposes only.
+#include <QDebug>
+
+
+
+/* -----------------------------------------
+ * Functions, AKA non-method custom actions
+-------------------------------------------*/
+void MainWindow::positionChanged()
+{
+    int pos = p->position();
+
+    if(pos >= 1500)
+    {
+        p->stop();
+    }
+}
 
 
 /* -----------------------------------
@@ -24,10 +43,23 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Show both the Sudoku image (page 2) and the textboxes (page 1)
+    ((QStackedLayout *)ui->stackedWidget->layout())->setStackingMode(QStackedLayout::StackAll);
+
+    // Media Player setup
+    p = new QMediaPlayer;
+    d = new QAudioOutput;
+
+    p->setAudioOutput(d);
+    p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
+    d->setVolume(0.02);
 
     // Connect signals and slots here.
-    connect(ui->HelpButton, SIGNAL(clicked()), this, SLOT(HelpButton_clicked()));
+    QObject::connect(ui->HelpButton, SIGNAL(clicked()), this, SLOT(HelpButton_clicked()));       // method slot
+    //QObject::connect(p, SIGNAL(positionChanged()), this, SLOT(positionChanged));                // function slot
 }
+
+
 
 /* -----------------------------------
  * Destructor, AKA behavior on close.
@@ -36,6 +68,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 
 /* --------------------------
@@ -70,16 +103,18 @@ void MainWindow::HelpButton_clicked()
 }
 
 
-// Fun Gilga-laugh when you click a blank space in the app
+// Fun Gilga-laugh when you click a blank space in the app.
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
+    // Uncomment this section and do everything locally to layer laughter.
+    /*
+     * p->setAudioOutput(d);
+     * p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
+     * d->setVolume(0.02);
+    */
 
-    QMediaPlayer * p = new QMediaPlayer;
-    QAudioOutput * d = new QAudioOutput;
-
-    p->setAudioOutput(d);
-    p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
-    d->setVolume(0.02);
+    // Restarts the audio when multiple clicks happen.
+    p->stop();
 
     p->play();
 

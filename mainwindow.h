@@ -6,6 +6,8 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 
 /* -----------------
@@ -14,6 +16,8 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+
 
 
 /* -----------------------------------------
@@ -27,13 +31,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
     void HelpButton_clicked();
-
-    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void positionChanged();
 
 private:
     Ui::MainWindow *ui;
-
+    QAudioOutput *d;
+    QMediaPlayer *p;
 };
 #endif // MAINWINDOW_H

@@ -29,6 +29,7 @@ QString readTextFile(QString path)
     return "";
 }
 
+
 /* --------------------------------------
  * Main function, with any needed extras.
 ----------------------------------------*/
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     {
         a.setStyleSheet(styles);
     }
+
 
     // Set up the main window with any needed names/customizations.
     MainWindow w;
