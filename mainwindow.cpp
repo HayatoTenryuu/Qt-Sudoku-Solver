@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Show both the Sudoku image (page 2) and the textboxes (page 1)
     ((QStackedLayout *)ui->stackedWidget->layout())->setStackingMode(QStackedLayout::StackAll);
+    ui->stackedWidget->setCurrentIndex(0);
 
     // Media Player setup
     p = new QMediaPlayer;
