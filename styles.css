@@ -1,42 +1,41 @@
 QPushButton#SolveButton
 {
-image: url(:/Resources/pushbutton.png);
-color: rgb(255, 255, 255);
+    image: url(:/Resources/pushbutton.png);
+    color: rgb(255, 255, 255);
 }
 
 QPushButton#SolveButton:pressed
 {
-image: url(:/Resources/pushbutton_pressed.png);
-color: rgb(200, 200, 200);
+    image: url(:/Resources/pushbutton_pressed.png);
+    color: rgb(200, 200, 200);
 }
 
 QPushButton#SolveButton:hover
 {
-border: none;
-background-color: rgb(255, 255, 255);
-padding: 2px;
+    border: none;
+    padding: 2px;
 }
 
 QPushButton#HelpButton
 {
-image: url(:/Resources/Blue_question_mark_icon.svg.png);
+    image: url(:/Resources/Blue_question_mark_icon.svg.png);
 }
 
 QPushButton#HelpButton:pressed
 {
-image: url(:/Resources/Blue_question_mark_icon_pressed.png);
+    image: url(:/Resources/Blue_question_mark_icon_pressed.png);
 }
 
 QPushButton#HelpButton:hover
 {
-border-radius: 30px;
+    border-radius: 30px;
 }
 
 QPushButton#TabButton
 {
-image: url(:/Resources/active.png);
-color: rgb(0, 0, 0);
-border: none;
+    image: url(:/Resources/active.png);
+    color: rgb(0, 0, 0);
+    border: none;
 }
 
 QLabel#SudokuGrid
@@ -44,3 +43,12 @@ QLabel#SudokuGrid
     image: url(:/Resources/blank-sudoku-grid.png);
 }
 
+QWidget#centralwidget
+{ 
+    background-color: rgb(255, 255, 255);
+}
+
+QLineEdit
+{
+    background-color:rgb(255, 255, 255);
+}
