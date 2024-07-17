@@ -23,12 +23,12 @@
 -------------------------------------------*/
 void MainWindow::positionChanged()
 {
-    int pos = p->position();
+    // int pos = p->position();
 
-    if(pos >= 1500)
-    {
-        p->stop();
-    }
+    // if(pos >= 1500)
+    // {
+    //     p->stop();
+    // }
 }
 
 
@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Show both the Sudoku image (page 2) and the textboxes (page 1)
     ((QStackedLayout *)ui->stackedWidget->layout())->setStackingMode(QStackedLayout::StackAll);
     ui->stackedWidget->setCurrentIndex(0);
+    // Change the size of stackedWidget pages here I guess?
 
     // Media Player setup
     p = new QMediaPlayer;
