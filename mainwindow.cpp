@@ -12,24 +12,23 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QStackedLayout>
+#include <QMouseEvent>
 
 // Testing purposes only.
 #include <QDebug>
 
 
 
+/* --------------------------------------------
+ * Global Variables, AKA stuff to use anywhere
+----------------------------------------------*/
+bool clip = false;
+
+
 /* -----------------------------------------
  * Functions, AKA non-method custom actions
 -------------------------------------------*/
-void MainWindow::positionChanged()
-{
-    // int pos = p->position();
 
-    // if(pos >= 1500)
-    // {
-    //     p->stop();
-    // }
-}
 
 
 /* -----------------------------------
@@ -43,22 +42,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Show both the Sudoku image (page 2) and the textboxes (page 1)
-    ((QStackedLayout *)ui->stackedWidget->layout())->setStackingMode(QStackedLayout::StackAll);
-    ui->stackedWidget->setCurrentIndex(0);
-    // Change the size of stackedWidget pages here I guess?
+    // Set preferred ui size
+    this->setMinimumSize(675, 870);
 
-    // Media Player setup
-    p = new QMediaPlayer;
-    d = new QAudioOutput;
-
+    // Set up audio player
     p->setAudioOutput(d);
     p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
     d->setVolume(0.02);
 
+    // Show both the Sudoku image (page 2) and the textboxes (page 1)
+    ((QStackedLayout *)ui->stackedWidget->layout())->setStackingMode(QStackedLayout::StackAll);
+    ui->stackedWidget->setCurrentIndex(0);
+
+    // Set the properties of the textboxes such that they align with the grid
+    int s = 50;
+    QList<QLineEdit *> LEs = this->findChildren<QLineEdit *>();
+    std::for_each(LEs.cbegin(), LEs.cend(), [&s](QLineEdit *n) {n->setMinimumSize(s,s); });
+    std::for_each(LEs.cbegin(), LEs.cend(), [&s](QLineEdit *n) {n->setMaximumSize(s,s); });
+
     // Connect signals and slots here.
-    QObject::connect(ui->HelpButton, SIGNAL(clicked()), this, SLOT(HelpButton_clicked()));       // method slot
-    //QObject::connect(p, SIGNAL(positionChanged()), this, SLOT(positionChanged));                // function slot
+    QObject::connect(ui->HelpButton, &QPushButton::clicked, this, &MainWindow::HelpButton_clicked);                                          // method slot
+    QObject::connect(this, &QAbstractButton::released. this, &QMainWindow::clicky)
 }
 
 
@@ -104,24 +108,25 @@ void MainWindow::HelpButton_clicked()
     MB.exec();
 }
 
-
 // Fun Gilga-laugh when you click a blank space in the app.
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+void clicked()
 {
-    // Uncomment this section and do everything locally to layer laughter.
-    /*
-     * p->setAudioOutput(d);
-     * p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
-     * d->setVolume(0.02);
-    */
+    if (clip)
+    {
+        // Restarts the audio when multiple clicks happen.
+        p->stop();
 
-    // Restarts the audio when multiple clicks happen.
-    p->stop();
-
-    p->play();
-
-    event->accept();
-
+        p->play();
+    }
+    else
+    {
+        // Layers laughter.
+        QMediaPlayer * g = new QMediaPlayer;
+        QAudioOutput * h = new QAudioOutput;
+        g->setAudioOutput(h);
+        g->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
+        h->setVolume(0.02);
+        g->play();
+    }
 }
-
 

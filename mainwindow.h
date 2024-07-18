@@ -23,19 +23,21 @@ QT_END_NAMESPACE
 /* -----------------------------------------
  * Main Window class with methods and slots.
  * ----------------------------------------*/
-class MainWindow : public QMainWindow
+class MainWindow
+    : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr);   
     ~MainWindow();
 
+signals:
+    void friend QAbstractButton::released();
 
 private slots:
     void HelpButton_clicked();
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void positionChanged();
+    void clicky(QMediaPlayer *p, QAudioOutput *d, bool clip = false);
 
 private:
     Ui::MainWindow *ui;
