@@ -1,0 +1,14 @@
+QDialog 
+{
+    min-width: 600 px;
+}
+
+QPushButton
+{
+    min-width: 50 px;
+}
+
+QLabel
+{
+    min-width: 100 px;
+}
