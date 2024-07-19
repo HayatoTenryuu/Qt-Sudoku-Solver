@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->d = new QAudioOutput;
     p->setAudioOutput(d);
     p->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
-    d->setVolume(0.02);
+    d->setVolume(0.1);
     this->clip = true;
 
     // Show both the Sudoku image (page 2) and the textboxes (page 1)
@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Connect signals and slots here.
     QObject::connect(ui->HelpButton, &QPushButton::clicked, this, &MainWindow::HelpButton_clicked);             // method slot from button signal A to ui slot B
+    QObject::connect(ui->GilButton, &QPushButton::toggled, this, &MainWindow::GilButton_toggled);
     QObject::connect(this, &MainWindow::clicky, &MainWindow::clicked);                                          // method slot from ui inherited signal A to ui slot B
 
         // Textbox input gatekeeping.
@@ -210,6 +211,14 @@ void MainWindow::HelpButton_clicked()
 
 // Fun Gilga-laugh when you click a blank space in the app. This emits the signal.
     // We do this in inherited signal <-> custom slot fashion because we want to pass custom arguments/parameters.
+void MainWindow::GilButton_toggled(bool checked)
+{
+    if (checked)
+        clip = false;
+    else
+        clip = true;
+}
+
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     emit clicky(p, clip);
@@ -233,7 +242,7 @@ void MainWindow::clicked(QMediaPlayer *p, bool clip)
         QAudioOutput * h = new QAudioOutput;
         g->setAudioOutput(h);
         g->setSource(QUrl("qrc:/Resources/S012_LvUp.ogg"));
-        h->setVolume(0.02);
+        h->setVolume(0.1);
         g->play();
     }
 }
@@ -2101,3 +2110,6 @@ void MainWindow::lineEdit99_textEdited(const QString &arg1)
     }
 
 }
+
+
+

@@ -31,6 +31,21 @@ QPushButton#HelpButton:hover
     border-radius: 30px;
 }
 
+QPushButton#GilButton 
+{
+    image: url(:/Resources/gil.png);
+}
+
+QPushButton#GilButton:checked 
+{
+    image: url(:/Resources/gil2.png);
+}
+
+QPushButton#GilButton:hover 
+{
+    border-radius: 30px;
+}
+
 QPushButton#TabButton
 {
     image: url(:/Resources/active.png);

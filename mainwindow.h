@@ -39,6 +39,7 @@ private slots:
     // Functional slots
     void HelpButton_clicked();
     void clicked(QMediaPlayer *p, bool clip);
+    void GilButton_toggled(bool checked);
 
     // Prevent invalid input
     void lineEdit11_textEdited(const QString &arg1);
