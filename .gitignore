@@ -1,6 +1,9 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+# Locations
+"C:\Users\faulkner\OneDrive - Matsumoto US Technologies Inc\Desktop\Programs\Programming\C++\Qt-SudokuSolver\build"
+
 *~
 *.autosave
 *.a
