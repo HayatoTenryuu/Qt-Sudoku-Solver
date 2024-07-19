@@ -205,7 +205,8 @@ void MainWindow::HelpButton_clicked()
     // Add odds and ends settings:
     MB.setWindowTitle("How to Use Sudoku Solver");
     MB.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
-    //MB.setStyleSheet("min-width: 300 px;" );
+
+    // Set style:
     QString MBstyles = readTextFile2(":/MBstyles.css");
     if(MBstyles.length() > 0)
     {
@@ -213,7 +214,6 @@ void MainWindow::HelpButton_clicked()
     }
 
     // Set a custom icon beside the text:
-    // MB.setIcon(QMessageBox::NoIcon);
     QPixmap * pix = new QPixmap;
     pix->load(":/Resources/oocon.png");
     *pix = pix->scaled(200, 250, Qt::KeepAspectRatio, Qt::FastTransformation);
@@ -231,11 +231,9 @@ void MainWindow::HelpButton_clicked()
                           "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
                           "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
 
-    // Set button size:
+    // Set buttons:
     MB.setStandardButtons(QMessageBox::Ok);
     MB.setDefaultButton(QMessageBox::Ok);
-    //QAbstractButton * pb = MB.buttons().at(0);
-    //pb->setStyleSheet("min-width: 50 px;");
 
     // Run the thing.
     MB.exec();
