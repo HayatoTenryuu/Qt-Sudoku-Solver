@@ -11,5 +11,7 @@
         <file>styles.css</file>
         <file>Resources/gil.png</file>
         <file>Resources/gil2.png</file>
+        <file>Resources/oocon.png</file>
+        <file>MBstyles.css</file>
     </qresource>
 </RCC>

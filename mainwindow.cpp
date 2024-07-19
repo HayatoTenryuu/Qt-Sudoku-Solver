@@ -13,6 +13,8 @@
 #include <QAudioOutput>
 #include <QStackedLayout>
 #include <QMouseEvent>
+#include <QFile>
+#include <QTextStream>
 
 // Add any needed C++ libraries here.
 
@@ -32,7 +34,18 @@
  * Functions, AKA non-method custom actions
 -------------------------------------------*/
 
+QString readTextFile2(QString path)
+{
+    QFile file(path);
 
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+        return in.readAll();
+    }
+
+    return "";
+}
 
 /* -----------------------------------
  * Constructor, AKA behavior on start.
@@ -46,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Set preferred ui size
-    this->setMinimumSize(675, 870);
+    this->setMinimumSize(650, 500);
 
     // Set up audio player
     this->p = new QMediaPlayer;
@@ -191,22 +204,43 @@ void MainWindow::HelpButton_clicked()
 
     // Add odds and ends settings:
     MB.setWindowTitle("How to Use Sudoku Solver");
+    MB.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
+    //MB.setStyleSheet("min-width: 300 px;" );
+    QString MBstyles = readTextFile2(":/MBstyles.css");
+    if(MBstyles.length() > 0)
+    {
+            MB.setStyleSheet(MBstyles);
+    }
 
+    // Set a custom icon beside the text:
+    // MB.setIcon(QMessageBox::NoIcon);
+    QPixmap * pix = new QPixmap;
+    pix->load(":/Resources/oocon.png");
+    *pix = pix->scaled(200, 250, Qt::KeepAspectRatio, Qt::FastTransformation);
+    MB.setIconPixmap(*pix);
+
+    // Set text:
     MB.setTextFormat(Qt::MarkdownText);
+    MB.setText("<b><u> Insert the Sudoku puzzle you would like solved </u></b>");
+    MB.setInformativeText("You can either click the individual squares you want to fill in, "
+                          "or you can start at the top \nleft square and tab through them all. "
+                          "When you type a number, it will auto-tab for you \nby default to speed up and simplify the process. \n\n"
+                          "Any numbers you don't know just leave blank. \n\n"
+                          "There are some advanced puzzles this solver can't solve, so if you "
+                          "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
+                          "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
+                          "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
 
-    MB.setText("<b><u> Insert the Sudoku puzzle you would like solved </u></b> \n\n"
-               "You can either click the individual squares you want to fill in, "
-               "or you can start at the top left square and tab through them all. "
-               "When you type a number, it will auto-tab for you by default to speed up and simplify the process. \n\n"
-               "Any numbers you don't know just leave blank. \n\n"
-               "There are some advanced puzzles this solver can't solve, so if you "
-               "have an error pop up, you will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
-               "Also, the AutoTab button does exactly that. When on, typing numbers automatically pushes you to "
-               "the next number, but if you want to hit the tab button yourself, you can by turning AutoTab off.");
-
+    // Set button size:
+    MB.setStandardButtons(QMessageBox::Ok);
+    MB.setDefaultButton(QMessageBox::Ok);
+    //QAbstractButton * pb = MB.buttons().at(0);
+    //pb->setStyleSheet("min-width: 50 px;");
 
     // Run the thing.
     MB.exec();
+
+
 }
 
 // Fun Gilga-laugh when you click a blank space in the app. This emits the signal.
