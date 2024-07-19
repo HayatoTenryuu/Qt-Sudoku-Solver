@@ -4,10 +4,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// Add any needed Qt libraries here.
 #include <QMainWindow>
 #include <QPushButton>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+
+// Add any needed C++ libraries here.
+
+
+// Testing purposes only.
+#include <QDebug>
+
+
 
 /* -----------------
  * Namespace Setup.
@@ -15,7 +24,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
 
 
 

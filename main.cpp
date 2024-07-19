@@ -6,9 +6,15 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-// Add any needed libraries here.
+// Add any needed Qt libraries here.
 #include <QFile>
 #include <QTextStream>
+
+// Add any needed C++ libraries here.
+
+
+// Testing purposes only.
+#include <QDebug>
 
 
 /* -----------------------------------------------------
