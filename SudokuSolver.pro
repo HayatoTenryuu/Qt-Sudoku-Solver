@@ -20,6 +20,7 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
+    MessageBox.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
-    <height>832</height>
+    <width>672</width>
+    <height>845</height>
    </rect>
   </property>
   <property name="font">
@@ -232,9 +232,6 @@
               <pointsize>22</pointsize>
               <bold>true</bold>
              </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: rgb(0, 0, 0);</string>
             </property>
             <property name="text">
              <string>Insert Your Puzzle:</string>

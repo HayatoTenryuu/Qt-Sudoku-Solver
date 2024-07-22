@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QMessageBox>
 
 // Add any needed C++ libraries here.
 
@@ -22,7 +23,7 @@
  * Namespace Setup.
  * ----------------*/
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class MainWindow; class Dialog; }
 QT_END_NAMESPACE
 
 
@@ -150,4 +151,22 @@ private:
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 };
+
+/*-----------------------------------------
+ * Custom classes for stuff I want to use.
+ * ---------------------------------------*/
+
+class Dialog
+    : public QMessageBox
+{
+    Q_OBJECT
+
+public:
+    Dialog(QWidget *parent = nullptr);
+    ~Dialog();
+    Ui::Dialog *mb;
+
+};
+
+
 #endif // MAINWINDOW_H

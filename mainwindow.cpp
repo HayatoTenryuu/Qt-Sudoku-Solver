@@ -4,6 +4,7 @@
 
 // Default
 #include "mainwindow.h"
+#include "ui_MessageBox.h"
 #include "ui_mainwindow.h"
 
 // Add any needed Qt libraries here.
@@ -51,7 +52,7 @@ QString readTextFile2(QString path)
  * Constructor, AKA behavior on start.
 -------------------------------------*/
 
-// Ui setup
+// Main Window
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -181,6 +182,38 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->lineEdit99, &QLineEdit::textEdited, this, &MainWindow::lineEdit99_textEdited);
 }
 
+// Custom Dialog
+Dialog::Dialog(QWidget *parent)
+    : mb(new Ui::Dialog)
+{
+    mb->setupUi(this);
+    Dialog MB;
+
+    // Add odds and ends settings:
+    MB.setWindowTitle("How to Use Sudoku Solver");
+    MB.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
+    MB.resize(500, 250);
+
+    // Set a custom icon beside the text:
+    QPixmap * pix = new QPixmap;
+    pix->load(":/Resources/oocon.png");
+    *pix = pix->scaled(200, 250, Qt::KeepAspectRatio, Qt::FastTransformation);
+    mb->label->setPixmap(*pix);
+
+    // Set text:
+    mb->label_2->setTextFormat(Qt::MarkdownText);
+    mb->label_2->setText("<b><u> Insert the Sudoku puzzle you would like solved </u></b> \n \n"
+                          "You can either click the individual squares you want to fill in, "
+                          "or you can start at the top \nleft square and tab through them all. "
+                          "When you type a number, it will auto-tab for you \nby default to speed up and simplify the process. \n\n"
+                          "Any numbers you don't know just leave blank. \n\n"
+                          "There are some advanced puzzles this solver can't solve, so if you "
+                          "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
+                          "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
+                          "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
+
+}
+
 
 /* -----------------------------------
  * Destructor, AKA behavior on close.
@@ -188,6 +221,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+Dialog::~Dialog()
+{
+    delete mb;
 }
 
 
@@ -199,45 +237,17 @@ MainWindow::~MainWindow()
 void MainWindow::HelpButton_clicked()
 {
 
-    // Initialize the message box:
-    QMessageBox MB;
-
-    // Add odds and ends settings:
-    MB.setWindowTitle("How to Use Sudoku Solver");
-    MB.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
+    // Run the thing.
+    Dialog MB;
 
     // Set style:
     QString MBstyles = readTextFile2(":/MBstyles.css");
     if(MBstyles.length() > 0)
     {
-            MB.setStyleSheet(MBstyles);
+        MB.setStyleSheet(MBstyles);
     }
 
-    // Set a custom icon beside the text:
-    QPixmap * pix = new QPixmap;
-    pix->load(":/Resources/oocon.png");
-    *pix = pix->scaled(200, 250, Qt::KeepAspectRatio, Qt::FastTransformation);
-    MB.setIconPixmap(*pix);
-
-    // Set text:
-    MB.setTextFormat(Qt::MarkdownText);
-    MB.setText("<b><u> Insert the Sudoku puzzle you would like solved </u></b>");
-    MB.setInformativeText("You can either click the individual squares you want to fill in, "
-                          "or you can start at the top \nleft square and tab through them all. "
-                          "When you type a number, it will auto-tab for you \nby default to speed up and simplify the process. \n\n"
-                          "Any numbers you don't know just leave blank. \n\n"
-                          "There are some advanced puzzles this solver can't solve, so if you "
-                          "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
-                          "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
-                          "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
-
-    // Set buttons:
-    MB.setStandardButtons(QMessageBox::Ok);
-    MB.setDefaultButton(QMessageBox::Ok);
-
-    // Run the thing.
-    MB.exec();
-
+    MB.show();
 
 }
 

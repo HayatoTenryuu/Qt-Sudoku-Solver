@@ -58,6 +58,11 @@ QLabel#SudokuGrid
     image: url(:/Resources/blank-sudoku-grid.png);
 }
 
+QLabel#label
+{
+    color: rgb(0, 0, 0);
+}
+
 QWidget#centralwidget
 { 
     background-color: rgb(255, 255, 255);

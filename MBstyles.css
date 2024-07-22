@@ -1,4 +1,7 @@
-
+QMessageBox {
+    background-color: rgb(255, 255, 255);
+    min-width: 800 px;
+}
 
 QAbstractButton {
     min-width: 50 px;
@@ -6,6 +9,5 @@ QAbstractButton {
 }
 
 QLabel {
-    min-width: 500 px;
-    min-height: 200 px;
+    color: rgb(0, 0, 0);
 }
