@@ -10,6 +10,7 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QMessageBox>
+#include <QDialog>
 
 // Add any needed C++ libraries here.
 
@@ -157,7 +158,7 @@ protected:
  * ---------------------------------------*/
 
 class Dialog
-    : public QMessageBox
+    : public QDialog
 {
     Q_OBJECT
 
@@ -165,6 +166,10 @@ public:
     Dialog(QWidget *parent = nullptr);
     ~Dialog();
     Ui::Dialog *mb;
+
+public slots:
+
+    void pushButton_clicked();
 
 };
 

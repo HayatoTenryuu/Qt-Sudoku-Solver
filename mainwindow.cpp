@@ -4,7 +4,7 @@
 
 // Default
 #include "mainwindow.h"
-#include "ui_MessageBox.h"
+#include "ui_MessageBoxx.h"
 #include "ui_mainwindow.h"
 
 // Add any needed Qt libraries here.
@@ -184,21 +184,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 // Custom Dialog
 Dialog::Dialog(QWidget *parent)
-    : mb(new Ui::Dialog)
+    : QDialog(parent)
+    , mb(new Ui::Dialog)
 {
     mb->setupUi(this);
-    Dialog MB;
 
     // Add odds and ends settings:
-    MB.setWindowTitle("How to Use Sudoku Solver");
-    MB.setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
-    MB.resize(500, 250);
+    this->setWindowTitle("How to Use Sudoku Solver");
+    this->setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
 
     // Set a custom icon beside the text:
     QPixmap * pix = new QPixmap;
     pix->load(":/Resources/oocon.png");
     *pix = pix->scaled(200, 250, Qt::KeepAspectRatio, Qt::FastTransformation);
     mb->label->setPixmap(*pix);
+    mb->label->setText("");
 
     // Set text:
     mb->label_2->setTextFormat(Qt::MarkdownText);
@@ -211,6 +211,21 @@ Dialog::Dialog(QWidget *parent)
                           "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
                           "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
                           "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
+    mb->label_2->setFixedWidth(450);
+    mb->label_2->setWordWrap(true);
+
+    // Set style:
+    QString MBstyles = readTextFile2(":/MBstyles.css");
+    if(MBstyles.length() > 0)
+    {
+        this->setStyleSheet(MBstyles);
+    }
+
+    // Set PushButton Text
+    mb->pushButton->setText("Okee dokee");
+
+    // Slots
+    QObject::connect(mb->pushButton, &QPushButton::clicked, this, &Dialog::pushButton_clicked);
 
 }
 
@@ -236,19 +251,16 @@ Dialog::~Dialog()
 // Popup window for clicking the Help Button.
 void MainWindow::HelpButton_clicked()
 {
-
     // Run the thing.
     Dialog MB;
 
-    // Set style:
-    QString MBstyles = readTextFile2(":/MBstyles.css");
-    if(MBstyles.length() > 0)
-    {
-        MB.setStyleSheet(MBstyles);
-    }
+    MB.exec();
 
-    MB.show();
+}
 
+void Dialog::pushButton_clicked()
+{
+    this->close();
 }
 
 // Fun Gilga-laugh when you click a blank space in the app. This emits the signal.
@@ -279,7 +291,7 @@ void MainWindow::clicked(QMediaPlayer *p, bool clip)
     }
     else
     {
-        // Layers laughter.
+        // Layer the laughter.
         QMediaPlayer * g = new QMediaPlayer;
         QAudioOutput * h = new QAudioOutput;
         g->setAudioOutput(h);

@@ -1,11 +1,10 @@
-QMessageBox {
+QDialog {
     background-color: rgb(255, 255, 255);
-    min-width: 800 px;
 }
 
-QAbstractButton {
+QPushButton {
     min-width: 50 px;
-    max-width: 50 px;
+    max-width: 500 px;
 }
 
 QLabel {

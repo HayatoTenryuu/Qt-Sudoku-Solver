@@ -20,7 +20,7 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
-    MessageBox.ui \
+    MessageBoxx.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -30,3 +30,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Resources.qrc
+
+
