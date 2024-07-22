@@ -6,10 +6,7 @@
 
 // Add any needed Qt libraries here.
 #include <QMainWindow>
-#include <QPushButton>
 #include <QMediaPlayer>
-#include <QAudioOutput>
-#include <QMessageBox>
 #include <QDialog>
 
 // Add any needed C++ libraries here.

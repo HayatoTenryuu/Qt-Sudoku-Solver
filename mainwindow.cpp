@@ -8,14 +8,10 @@
 #include "ui_mainwindow.h"
 
 // Add any needed Qt libraries here.
-#include <QMouseEvent>
-#include <QMessageBox>
-#include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QStackedLayout>
 #include <QMouseEvent>
 #include <QFile>
-#include <QTextStream>
 
 // Add any needed C++ libraries here.
 
