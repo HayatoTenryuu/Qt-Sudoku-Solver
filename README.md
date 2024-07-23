@@ -1,5 +1,5 @@
 # Qt-Sudoku-Solver
-This is literally just a C++ copy of my other C# Sudoku Solver. 
+This is literally just a C++ copy of my other C# Sudoku Solver. While not a complete duplicate, it looks the same overall and does most of the same stuff, but I have included fun features in this one that I've found along the way.
 The reason I'm making this one is because I want the brute force solution to use Prolog, because it is easy to think of that method of solving things as a recursive problem:
 
 Guess A, solve, if no conlicts, repeat. 
