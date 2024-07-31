@@ -7,13 +7,16 @@
 #include "ui_MessageBoxx.h"
 #include "ui_mainwindow.h"
 
+
 // Add any needed Qt libraries here.
 #include <QAudioOutput>
 #include <QStackedLayout>
 #include <QMouseEvent>
 #include <QFile>
 
+
 // Add any needed C++ libraries here.
+#include "switch.h"
 
 
 // Testing purposes only.
@@ -25,6 +28,7 @@
  * Global Variables, AKA stuff to use anywhere
 ----------------------------------------------*/
 
+QKeyEvent *kp = new QKeyEvent(QKeyEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
 
 
 /* -----------------------------------------
@@ -58,6 +62,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Set preferred ui size
     this->setMinimumSize(650, 500);
 
+    // Set up AutoTab
+    Switch * switch1 = new Switch("AutoTab ");
+    ui->horizontalLayout_3->replaceWidget(ui->TabButton, switch1);
+    switch1->setLayoutDirection(Qt::RightToLeft);
+    ui->TabButton->deleteLater();
+
     // Set up audio player
     this->p = new QMediaPlayer;
     this->d = new QAudioOutput;
@@ -86,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->GilButton, &QPushButton::toggled, this, &MainWindow::GilButton_toggled);
     QObject::connect(this, &MainWindow::clicky, &MainWindow::clicked);                                          // method slot from ui inherited signal A to ui slot B
 
-        // Textbox input gatekeeping.
+    // Textbox input gatekeeping.
     QObject::connect(ui->lineEdit11, &QLineEdit::textEdited, this, &MainWindow::lineEdit11_textEdited);
     QObject::connect(ui->lineEdit12, &QLineEdit::textEdited, this, &MainWindow::lineEdit12_textEdited);
     QObject::connect(ui->lineEdit13, &QLineEdit::textEdited, this, &MainWindow::lineEdit13_textEdited);
@@ -199,14 +209,14 @@ Dialog::Dialog(QWidget *parent)
     // Set text:
     mb->label_2->setTextFormat(Qt::MarkdownText);
     mb->label_2->setText("<b><u> Insert the Sudoku puzzle you would like solved </u></b> \n \n"
-                          "You can either click the individual squares you want to fill in, "
-                          "or you can start at the top \nleft square and tab through them all. "
-                          "When you type a number, it will auto-tab for you \nby default to speed up and simplify the process. \n\n"
-                          "Any numbers you don't know just leave blank. \n\n"
-                          "There are some advanced puzzles this solver can't solve, so if you "
-                          "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
-                          "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
-                          "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
+                         "You can either click the individual squares you want to fill in, "
+                         "or you can start at the top \nleft square and tab through them all. "
+                         "When you type a number, it will auto-tab for you \nby default to speed up and simplify the process. \n\n"
+                         "Any numbers you don't know just leave blank. \n\n"
+                         "There are some advanced puzzles this solver can't solve, so if you "
+                         "have an error pop up, \nyou will need to solve the puzzle by hand or wait until the next release to try again. \n\n"
+                         "Also, the AutoTab button does exactly that. When on, typing numbers automatically \npushes you to "
+                         "the next number, but if you want to hit the tab button yourself, you can \nby turning AutoTab off.");
     mb->label_2->setFixedWidth(450);
     mb->label_2->setWordWrap(true);
 
@@ -260,7 +270,7 @@ void Dialog::pushButton_clicked()
 }
 
 // Fun Gilga-laugh when you click a blank space in the app. This emits the signal.
-    // We do this in inherited signal <-> custom slot fashion because we want to pass custom arguments/parameters.
+// We do this in inherited signal <-> custom slot fashion because we want to pass custom arguments/parameters.
 void MainWindow::GilButton_toggled(bool checked)
 {
     if (checked)
@@ -303,22 +313,31 @@ void MainWindow::lineEdit11_textEdited(const QString &arg1)
     int b = arg1.toInt();
     switch (b)
     {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            ui->lineEdit11->setText(arg1);
-            break;
-        default:
-            ui->lineEdit11->setText("");
-            break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    {
+        ui->lineEdit11->setText(arg1);
+        break;
+    }
+    default:
+    {
+        ui->lineEdit11->setText("");
+        break;
+    }
     }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit11->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit12_textEdited(const QString &arg1)
@@ -335,13 +354,22 @@ void MainWindow::lineEdit12_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit12->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit12->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit12->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit13_textEdited(const QString &arg1)
@@ -358,13 +386,22 @@ void MainWindow::lineEdit13_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit13->setText(arg1);
         break;
+    };
     default:
+    {
         ui->lineEdit13->setText("");
         break;
+    };
     }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit13->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit14_textEdited(const QString &arg1)
@@ -381,13 +418,22 @@ void MainWindow::lineEdit14_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit14->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit14->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit14->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit15_textEdited(const QString &arg1)
@@ -404,13 +450,22 @@ void MainWindow::lineEdit15_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit15->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit15->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit15->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit16_textEdited(const QString &arg1)
@@ -427,13 +482,22 @@ void MainWindow::lineEdit16_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit16->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit16->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit16->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit17_textEdited(const QString &arg1)
@@ -450,13 +514,22 @@ void MainWindow::lineEdit17_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit17->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit17->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit17->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit18_textEdited(const QString &arg1)
@@ -473,13 +546,22 @@ void MainWindow::lineEdit18_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit18->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit18->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit18->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit19_textEdited(const QString &arg1)
@@ -496,13 +578,22 @@ void MainWindow::lineEdit19_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit19->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit19->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit19->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit21_textEdited(const QString &arg1)
@@ -519,13 +610,22 @@ void MainWindow::lineEdit21_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit21->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit21->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit21->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit22_textEdited(const QString &arg1)
@@ -542,13 +642,22 @@ void MainWindow::lineEdit22_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit22->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit22->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit22->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit23_textEdited(const QString &arg1)
@@ -565,13 +674,22 @@ void MainWindow::lineEdit23_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit23->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit23->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit23->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit24_textEdited(const QString &arg1)
@@ -588,13 +706,22 @@ void MainWindow::lineEdit24_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit24->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit24->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit24->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit25_textEdited(const QString &arg1)
@@ -611,13 +738,22 @@ void MainWindow::lineEdit25_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit25->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit25->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit25->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit26_textEdited(const QString &arg1)
@@ -634,13 +770,22 @@ void MainWindow::lineEdit26_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit26->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit26->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit26->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit27_textEdited(const QString &arg1)
@@ -657,13 +802,22 @@ void MainWindow::lineEdit27_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit27->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit27->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit27->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit28_textEdited(const QString &arg1)
@@ -680,13 +834,22 @@ void MainWindow::lineEdit28_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit28->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit28->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit28->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit29_textEdited(const QString &arg1)
@@ -703,13 +866,22 @@ void MainWindow::lineEdit29_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit29->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit29->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit29->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit31_textEdited(const QString &arg1)
@@ -726,13 +898,22 @@ void MainWindow::lineEdit31_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit31->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit31->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit31->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit32_textEdited(const QString &arg1)
@@ -749,13 +930,22 @@ void MainWindow::lineEdit32_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit32->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit32->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit32->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit33_textEdited(const QString &arg1)
@@ -772,13 +962,22 @@ void MainWindow::lineEdit33_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit33->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit33->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit33->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit34_textEdited(const QString &arg1)
@@ -795,13 +994,22 @@ void MainWindow::lineEdit34_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit34->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit34->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit34->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit35_textEdited(const QString &arg1)
@@ -818,13 +1026,22 @@ void MainWindow::lineEdit35_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit35->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit35->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit35->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit36_textEdited(const QString &arg1)
@@ -841,13 +1058,22 @@ void MainWindow::lineEdit36_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit36->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit36->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit36->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit37_textEdited(const QString &arg1)
@@ -864,13 +1090,22 @@ void MainWindow::lineEdit37_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit37->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit37->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit37->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit38_textEdited(const QString &arg1)
@@ -887,13 +1122,22 @@ void MainWindow::lineEdit38_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit38->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit38->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit38->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit39_textEdited(const QString &arg1)
@@ -910,13 +1154,22 @@ void MainWindow::lineEdit39_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit39->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit39->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit39->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit41_textEdited(const QString &arg1)
@@ -933,13 +1186,22 @@ void MainWindow::lineEdit41_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit41->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit41->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit41->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit42_textEdited(const QString &arg1)
@@ -956,13 +1218,22 @@ void MainWindow::lineEdit42_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit42->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit42->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit42->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit43_textEdited(const QString &arg1)
@@ -979,13 +1250,22 @@ void MainWindow::lineEdit43_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit43->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit43->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit43->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit44_textEdited(const QString &arg1)
@@ -1002,13 +1282,22 @@ void MainWindow::lineEdit44_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit44->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit44->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit44->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit45_textEdited(const QString &arg1)
@@ -1025,13 +1314,22 @@ void MainWindow::lineEdit45_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit45->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit45->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit45->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit46_textEdited(const QString &arg1)
@@ -1048,13 +1346,22 @@ void MainWindow::lineEdit46_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit46->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit46->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit46->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit47_textEdited(const QString &arg1)
@@ -1071,13 +1378,22 @@ void MainWindow::lineEdit47_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit47->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit47->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit47->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit48_textEdited(const QString &arg1)
@@ -1094,13 +1410,22 @@ void MainWindow::lineEdit48_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit48->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit48->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit48->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit49_textEdited(const QString &arg1)
@@ -1117,13 +1442,22 @@ void MainWindow::lineEdit49_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit49->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit49->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit49->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit51_textEdited(const QString &arg1)
@@ -1140,13 +1474,22 @@ void MainWindow::lineEdit51_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit51->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit51->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit51->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit52_textEdited(const QString &arg1)
@@ -1163,13 +1506,22 @@ void MainWindow::lineEdit52_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit52->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit52->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit52->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit53_textEdited(const QString &arg1)
@@ -1186,13 +1538,22 @@ void MainWindow::lineEdit53_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit53->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit53->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit53->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit54_textEdited(const QString &arg1)
@@ -1209,13 +1570,22 @@ void MainWindow::lineEdit54_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit54->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit54->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit54->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit55_textEdited(const QString &arg1)
@@ -1232,13 +1602,22 @@ void MainWindow::lineEdit55_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit55->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit55->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit55->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit56_textEdited(const QString &arg1)
@@ -1255,13 +1634,22 @@ void MainWindow::lineEdit56_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit56->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit56->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit56->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit57_textEdited(const QString &arg1)
@@ -1278,13 +1666,22 @@ void MainWindow::lineEdit57_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit57->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit57->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit57->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit58_textEdited(const QString &arg1)
@@ -1301,13 +1698,22 @@ void MainWindow::lineEdit58_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit58->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit58->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit58->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit59_textEdited(const QString &arg1)
@@ -1324,13 +1730,22 @@ void MainWindow::lineEdit59_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit59->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit59->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit59->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit61_textEdited(const QString &arg1)
@@ -1347,13 +1762,22 @@ void MainWindow::lineEdit61_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit61->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit61->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit61->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit62_textEdited(const QString &arg1)
@@ -1370,13 +1794,22 @@ void MainWindow::lineEdit62_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit62->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit62->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit62->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit63_textEdited(const QString &arg1)
@@ -1393,13 +1826,22 @@ void MainWindow::lineEdit63_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit63->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit63->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit63->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit64_textEdited(const QString &arg1)
@@ -1416,13 +1858,22 @@ void MainWindow::lineEdit64_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit64->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit64->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit64->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit65_textEdited(const QString &arg1)
@@ -1439,13 +1890,22 @@ void MainWindow::lineEdit65_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit65->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit65->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit65->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit66_textEdited(const QString &arg1)
@@ -1462,13 +1922,22 @@ void MainWindow::lineEdit66_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit66->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit66->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit66->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit67_textEdited(const QString &arg1)
@@ -1485,13 +1954,22 @@ void MainWindow::lineEdit67_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit67->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit67->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit67->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit68_textEdited(const QString &arg1)
@@ -1508,13 +1986,22 @@ void MainWindow::lineEdit68_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit68->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit68->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit68->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit69_textEdited(const QString &arg1)
@@ -1531,13 +2018,22 @@ void MainWindow::lineEdit69_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit69->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit69->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit69->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit71_textEdited(const QString &arg1)
@@ -1554,13 +2050,22 @@ void MainWindow::lineEdit71_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit71->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit71->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit71->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit72_textEdited(const QString &arg1)
@@ -1577,13 +2082,22 @@ void MainWindow::lineEdit72_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit72->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit72->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit72->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit73_textEdited(const QString &arg1)
@@ -1600,13 +2114,22 @@ void MainWindow::lineEdit73_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit73->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit73->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit73->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit74_textEdited(const QString &arg1)
@@ -1623,13 +2146,22 @@ void MainWindow::lineEdit74_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit74->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit74->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit74->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit75_textEdited(const QString &arg1)
@@ -1646,13 +2178,22 @@ void MainWindow::lineEdit75_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit75->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit75->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit75->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit76_textEdited(const QString &arg1)
@@ -1669,13 +2210,22 @@ void MainWindow::lineEdit76_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit76->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit76->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit76->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit77_textEdited(const QString &arg1)
@@ -1692,13 +2242,22 @@ void MainWindow::lineEdit77_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit77->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit77->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit77->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit78_textEdited(const QString &arg1)
@@ -1715,13 +2274,22 @@ void MainWindow::lineEdit78_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit78->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit78->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit78->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit79_textEdited(const QString &arg1)
@@ -1738,13 +2306,22 @@ void MainWindow::lineEdit79_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit79->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit79->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit79->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit81_textEdited(const QString &arg1)
@@ -1761,13 +2338,22 @@ void MainWindow::lineEdit81_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit81->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit81->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit81->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit82_textEdited(const QString &arg1)
@@ -1784,13 +2370,22 @@ void MainWindow::lineEdit82_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit82->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit82->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit82->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit83_textEdited(const QString &arg1)
@@ -1807,13 +2402,22 @@ void MainWindow::lineEdit83_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit83->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit83->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit83->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit84_textEdited(const QString &arg1)
@@ -1830,13 +2434,22 @@ void MainWindow::lineEdit84_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit84->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit84->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit84->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit85_textEdited(const QString &arg1)
@@ -1853,13 +2466,22 @@ void MainWindow::lineEdit85_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit85->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit85->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit85->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit86_textEdited(const QString &arg1)
@@ -1876,13 +2498,22 @@ void MainWindow::lineEdit86_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit86->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit86->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit86->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit87_textEdited(const QString &arg1)
@@ -1899,13 +2530,22 @@ void MainWindow::lineEdit87_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit87->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit87->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit87->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit88_textEdited(const QString &arg1)
@@ -1922,13 +2562,22 @@ void MainWindow::lineEdit88_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit88->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit88->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit88->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit89_textEdited(const QString &arg1)
@@ -1945,13 +2594,22 @@ void MainWindow::lineEdit89_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit89->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit89->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit89->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit91_textEdited(const QString &arg1)
@@ -1968,13 +2626,22 @@ void MainWindow::lineEdit91_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit91->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit91->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit91->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit92_textEdited(const QString &arg1)
@@ -1991,13 +2658,22 @@ void MainWindow::lineEdit92_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit92->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit92->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit92->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit93_textEdited(const QString &arg1)
@@ -2014,13 +2690,22 @@ void MainWindow::lineEdit93_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit93->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit93->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit93->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit94_textEdited(const QString &arg1)
@@ -2037,13 +2722,22 @@ void MainWindow::lineEdit94_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit94->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit94->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit94->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit95_textEdited(const QString &arg1)
@@ -2060,13 +2754,22 @@ void MainWindow::lineEdit95_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit95->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit95->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit95->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit96_textEdited(const QString &arg1)
@@ -2083,13 +2786,22 @@ void MainWindow::lineEdit96_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit96->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit96->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit96->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit97_textEdited(const QString &arg1)
@@ -2106,13 +2818,22 @@ void MainWindow::lineEdit97_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit97->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit97->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit97->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit98_textEdited(const QString &arg1)
@@ -2129,13 +2850,22 @@ void MainWindow::lineEdit98_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit98->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit98->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit98->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
 
 void MainWindow::lineEdit99_textEdited(const QString &arg1)
@@ -2152,14 +2882,20 @@ void MainWindow::lineEdit99_textEdited(const QString &arg1)
     case 7:
     case 8:
     case 9:
+    {
         ui->lineEdit99->setText(arg1);
         break;
+    }
     default:
+    {
         ui->lineEdit99->setText("");
         break;
     }
+    }
 
+    Switch * autotab = this->findChild<Switch *>();
+    if (autotab->isChecked() && ui->lineEdit99->text()!="")
+    {
+        QApplication::sendEvent(this, kp);
+    }
 }
-
-
-

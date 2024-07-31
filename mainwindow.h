@@ -144,6 +144,7 @@ private:
     QAudioOutput *d;
     QMediaPlayer *p;
     bool clip;
+    bool tabb;
 
     // Pull events from other interfaces by right click -> refactor -> insert virtual functions
 protected:
