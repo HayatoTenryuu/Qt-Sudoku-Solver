@@ -60,13 +60,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Set preferred ui size
-    this->setMinimumSize(650, 500);
+    this->setMinimumSize(650, 845);
+    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     // Set up AutoTab
     Switch * switch1 = new Switch("AutoTab ");
     ui->horizontalLayout_3->replaceWidget(ui->TabButton, switch1);
     switch1->setLayoutDirection(Qt::RightToLeft);
     ui->TabButton->deleteLater();
+    switch1->setChecked(true);
 
     // Set up audio player
     this->p = new QMediaPlayer;
@@ -198,6 +200,7 @@ Dialog::Dialog(QWidget *parent)
     // Add odds and ends settings:
     this->setWindowTitle("How to Use Sudoku Solver");
     this->setWindowIcon(QIcon(":/Resources/Cuneiform_sumer_dingir.svg.png"));
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     // Set a custom icon beside the text:
     QPixmap * pix = new QPixmap;
