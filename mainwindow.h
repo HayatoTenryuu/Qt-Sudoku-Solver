@@ -1,6 +1,12 @@
-/* -------------------------
+/*-------------------------------------------------------------------------------
+ * This file is the Declaration of each class, its constituents, and functions.
+ * The include files are merely for establishing the types.
+ *-----------------------------------------------------------------------------*/
+
+
+/*--------------------------
  * If-guards and libraries.
- * ------------------------*/
+ *-------------------------*/
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -11,24 +17,21 @@
 
 // Add any needed C++ libraries here.
 
-
 // Testing purposes only.
 #include <QDebug>
 
 
-
-/* -----------------
+/*------------------
  * Namespace Setup.
- * ----------------*/
+ *-----------------*/
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; class Dialog; }
+namespace Ui { class MainWindow; class Dialog; class FinalWindow; }
 QT_END_NAMESPACE
 
 
-
-/* -----------------------------------------
+/*------------------------------------------
  * Main Window class with methods and slots.
- * ----------------------------------------*/
+ *-----------------------------------------*/
 class MainWindow
     : public QMainWindow
 {
@@ -47,6 +50,7 @@ private slots:
     void HelpButton_clicked();
     void clicked(QMediaPlayer *p, bool clip);
     void GilButton_toggled(bool checked);
+    void SolveButton_clicked();
 
     // Prevent invalid input
     void lineEdit11_textEdited(const QString &arg1);
@@ -151,9 +155,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
 };
 
+
 /*-----------------------------------------
  * Custom classes for stuff I want to use.
- * ---------------------------------------*/
+ *----------------------------------------*/
 
 class Dialog
     : public QDialog
@@ -171,5 +176,16 @@ public slots:
 
 };
 
+
+class FinalWindow
+    : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    FinalWindow(QWidget *parent = nullptr);
+    ~FinalWindow();
+    Ui::FinalWindow *ui2;
+};
 
 #endif // MAINWINDOW_H

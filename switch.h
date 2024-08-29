@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------------
+ * This file is the Declaration of each class, its constituents, and functions.
+ * The include files are merely for establishing the types.
+ *-----------------------------------------------------------------------------*/
+
 /*
  * This is nearly complete Material design Switch widget implementation in qtwidgets module.
  * More info: https://material.io/design/components/selection-controls.html#switches
@@ -14,15 +19,28 @@
  * GNU General Public License for more details.
 */
 
+/*--------------------------
+ * If-guards and libraries.
+ *-------------------------*/
+
 #ifndef SWITCH_H
 #define SWITCH_H
 
+// Add any needed Qt libraries here.
 #include <QtWidgets>
 #include "style.h"
 
-class Animator final : public QVariantAnimation {
+// Add any needed C++ libraries here.
+
+
+/*-----------------------------------
+ *      Class Declarations
+ *----------------------------------*/
+
+class Animator final : public QVariantAnimation
+{
     Q_OBJECT
-    Q_PROPERTY(QObject* targetObject READ targetObject WRITE setTargetObject NOTIFY targetObject)
+    Q_PROPERTY(QObject* targetObject READ targetObject WRITE setTargetObject)
 
 public:
     Animator(QObject* target, QObject* parent = nullptr);
@@ -31,7 +49,8 @@ public:
     QObject* targetObject() const;
     void setTargetObject(QObject* target);
 
-    inline bool isRunning() const {
+    inline bool isRunning() const
+    {
         return state() == Running;
     }
 
@@ -48,7 +67,8 @@ private:
     QPointer<QObject> target;
 };
 
-class SelectionControl : public QAbstractButton {
+class SelectionControl : public QAbstractButton
+{
     Q_OBJECT
 
 public:
@@ -68,7 +88,8 @@ protected:
 };
 
 // Radius of track fillets, circle, and shadow
-class Switch final : public SelectionControl {
+class Switch final : public SelectionControl
+{
     Q_OBJECT
 
     static constexpr auto CORNER_RADIUS = 6.0;

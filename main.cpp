@@ -1,6 +1,7 @@
-/* ---------------------------------
- * Libraries, AKA stuff you can do.
- * --------------------------------*/
+/*-------------------------------------------
+ * This file is the Definition of main.
+ * The include files are used functionally.
+ *------------------------------------------*/
 
 // Default
 #include "mainwindow.h"
@@ -17,9 +18,9 @@
 #include <QDebug>
 
 
-/* -----------------------------------------------------
- * Custom functions that the main application will use.
--------------------------------------------------------*/
+/*-------------------------------------------------------
+ * Custom functions that the main application will use
+ *------------------------------------------------------*/
 
 // File I/O for reading the Style Sheet
 QString readTextFile(QString path)
@@ -36,9 +37,9 @@ QString readTextFile(QString path)
 }
 
 
-/* --------------------------------------
- * Main function, with any needed extras.
-----------------------------------------*/
+/*----------------------------------------
+ * Main function, with any needed extras
+ *---------------------------------------*/
 
 int main(int argc, char *argv[])
 {

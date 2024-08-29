@@ -10,6 +10,12 @@
     <height>845</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>672</width>
+    <height>845</height>
+   </size>
+  </property>
   <property name="font">
    <font>
     <fontweight>DemiBold</fontweight>
